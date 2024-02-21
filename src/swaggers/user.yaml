@@ -62,36 +62,52 @@
         $ref: './openapi.yaml#/components/responses/BadRequest'
       '500':
         $ref: './openapi.yaml#/components/responses/InternalServerError'
-  put:
-    tags:
-      - User
-    summary: 유저 정보 수정
-    parameters:
-      - in: path
-        name: userId
-        required: true
-        description: 유저 id
-        schema:
-          type: string
-    consumes:
-      - application/json
-    requestBody:
-      description: \[Optional\] name, age, phone, email, school-name, school-major
-      x-name: body
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: './openapi.yaml#/components/schemas/user'
 
-  delete:
+
+/user/signup:
+  post:
     tags:
       - User
-    summary: 유저 삭제
+    summary: 회원 가입
     parameters:
       - in: path
-        name: userId
+        name: email
         required: true
-        description: 유저 id
+        description: 회원가입하려는 사용자의 아이디
         schema:
           type: string
+      - in: path
+        name: password
+        required: true
+        description: 회원가입하려는 사용자의 패스워드
+        schema:
+          type: string
+      - in: path
+        name: nickname
+        required: true
+        description: 회원가입하려는 사용자의 닉네임
+        schema:
+          type: string
+    responses:
+      '200':
+        description: 회원 가입 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {
+              "status": 201,
+                "success": true,
+                "message": "회원 가입 성공",
+                "data": {
+                  "_id": "6283a755c2f673e5e81a6fea",
+                  "nickname": "김예리바보",
+                  "email": "rlafl7942testest@naver.com",
+                  "token": "kaflkj3r432332434lk234lkm"
+                }
+              }
+      '400':
+        $ref: './openapi.yaml#/components/responses/BadRequest'
+      '500':
+        $ref: './openapi.yaml#/components/responses/InternalServerError'
+

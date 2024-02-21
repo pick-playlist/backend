@@ -83,3 +83,5 @@ paths:
     $ref: "./user.yaml#/~1user"
   /user/{userId}:
     $ref: "./user.yaml#/~1user~1{userId}"
+  /user/signup:
+    $ref: "./user.yaml#/~1user~1signup"
