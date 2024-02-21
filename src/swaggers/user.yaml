@@ -111,3 +111,53 @@
       '500':
         $ref: './openapi.yaml#/components/responses/InternalServerError'
 
+
+/user/login:
+  post:
+    tags:
+      - User
+    summary: 로그인
+    parameters:
+      - in: path
+        name: email
+        required: false
+        description: 회원가입하려는 사용자의 아이디
+        schema:
+          type: string
+      - in: path
+        name: password
+        required: false
+        description: 회원가입하려는 사용자의 패스워드
+        schema:
+          type: string
+      - in: path
+        name: nickname
+        required: true
+        description: 회원가입하려는 사용자의 닉네임
+        schema:
+          type: string
+      - in: path
+        name: isMember
+        required: true
+        description: 회원 여부(회원 로그인은 true, 비회원 로그인은 false)
+        schema:
+          type: boolean
+    responses:
+      '200':
+        description: 로그인 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {
+              "status": 201,
+                "success": true,
+                "message": "로그인 성공",
+                "data": {
+                  "token": "kaflkj3r432332434lk234lkm"
+                }
+              }
+      '400':
+        $ref: './openapi.yaml#/components/responses/BadRequest'
+      '500':
+        $ref: './openapi.yaml#/components/responses/InternalServerError'
