@@ -6,10 +6,10 @@ const logger = require("morgan");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
-const { connectDB } = require("./utils/db");
+const { connectDB } = require("./src/utils/db");
 
-const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/user");
+const indexRouter = require("./src/routes/index");
+const usersRouter = require("./src/routes/user");
 
 const app = express();
 
