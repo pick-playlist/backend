@@ -29,12 +29,6 @@
       - User
     summary: 유저 정보 조회
     parameters:
-      - in: path
-        name: userId
-        required: true
-        description: 유저 id
-        schema:
-          type: string
     responses:
       '200':
         description: 유저 조회 성공
@@ -47,15 +41,12 @@
                 "success": true,
                 "message": "유저 조회 성공",
                 "data": {
-                  "school": {
-                    "name": "xx대학교",
-                    "major": "컴퓨터공학부"
-                  },
                   "_id": "6283a755c2f673e5e81a6fea",
-                  "name": "홍길동",
-                  "phone": "01011112222",
                   "email": "validateTest-email2@naver.com",
-                  "age": 20
+                  "nickname": "홍길동",
+                  "success_rate_uploaded_songs": "3499",
+                  "accepted_playlists": "6283a755c2f673e5e81a6fea",
+                  "rejected_playlists": "6283a755c2f673e5e81a6fea",
                 }
               }
       '400':
@@ -216,3 +207,5 @@
         $ref: './openapi.yaml#/components/responses/BadRequest'
       '500':
         $ref: './openapi.yaml#/components/responses/InternalServerError'
+
+
