@@ -96,25 +96,22 @@
     tags:
       - User
     summary: 회원 가입
-    parameters:
-      - in: path
-        name: email
-        required: true
-        description: 회원가입하려는 사용자의 아이디
-        schema:
-          type: string
-      - in: path
-        name: password
-        required: true
-        description: 회원가입하려는 사용자의 패스워드
-        schema:
-          type: string
-      - in: path
-        name: nickname
-        required: true
-        description: 회원가입하려는 사용자의 닉네임
-        schema:
-          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: 회원가입하려는 사용자의 아이디
+              password:
+                type: string
+                description: 회원가입하려는 사용자의 패스워드
+              nickname:
+                type: string
+                description: 회원가입하려는 사용자의 닉네임
     responses:
       '200':
         description: 회원 가입 성공
@@ -142,31 +139,25 @@
     tags:
       - User
     summary: 로그인
-    parameters:
-      - in: path
-        name: email
-        required: false
-        description: 로그인하려는 사용자의 아이디
-        schema:
-          type: string
-      - in: path
-        name: password
-        required: false
-        description: 로그인하려는 사용자의 패스워드
-        schema:
-          type: string
-      - in: path
-        name: nickname
-        required: true
-        description: 로그인하려는 사용자의 닉네임
-        schema:
-          type: string
-      - in: path
-        name: isMember
-        required: true
-        description: 회원 여부(회원 로그인은 true, 비회원 로그인은 false)
-        schema:
-          type: boolean
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: 로그인하려는 사용자의 아이디
+              password:
+                type: string
+                description: 로그인하려는 사용자의 패스워드
+              nickname:
+                type: string
+                description: 로그인하려는 사용자의 닉네임
+              isMember:
+                type: boolean
+                description: 회원 여부(회원 로그인은 true, 비회원 로그인은 false)
     responses:
       '200':
         description: 로그인 성공
@@ -193,13 +184,16 @@
     tags:
       - User
     summary: 비밀번호 찾기
-    parameters:
-      - in: path
-        name: email
-        required: true
-        description: 회원가입하려는 사용자의 아이디
-        schema:
-          type: string
+    requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    description: 회원가입하려는 사용자의 아이디
     responses:
       '200':
         description: 비밀번호 찾기 성공
