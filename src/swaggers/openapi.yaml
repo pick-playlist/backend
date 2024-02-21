@@ -13,26 +13,24 @@ components:
   schemas:
     user:
       properties:
-        name:
+        _id:
           type: string
-          description: 유저 이름
-        age:
-          type: number
-          description: 유저 나이
-        phone:
+          description: 오브젝트 아이디
+        nickname:
           type: string
-          description: 핸드폰번호
+          description: 닉네임
         email:
           type: string
           description: 이메일 주소
-        school:
-          properties:
-            name:
-              type: string
-              description: 학교 이름
-            major:
-              type: string
-              description: 전공
+        success_rate_uploaded_songs:
+          type: number
+          description: 노래 등록 성공률
+        accepted_playlists:
+          type: Playlist
+          description: 수락된 플레이리스트
+        rejected_playlists:
+          type: Playlist
+          description: 거절된 플레이리스트
     Error:
       type: object
       properties:
@@ -45,10 +43,12 @@ components:
     userExample:
       value:
         {
-          "name": "홍길동",
-          "phone": "01011112222",
-          "email": "swaggerTest@naver.com",
-          "school": { "name": "xx대학교", "major": "컴퓨터공학부" },
+          "_id": "6283a755c2f673e5e81a6fea",
+          "email": "validateTest-email2@naver.com",
+          "nickname": "홍길동",
+          "success_rate_uploaded_songs": "3499",
+          "accepted_playlists": "6283a755c2f673e5e81a6fea",
+          "rejected_playlists": "6283a755c2f673e5e81a6fea",
         }
   #Responses 재사용되는 애들
   responses:
@@ -79,8 +79,6 @@ components:
             message: 서버 내부 오류
 #Paths api 경로 지정
 paths:
-  /user:
-    $ref: "./user.yaml#/~1user"
   /user/{userId}:
     $ref: "./user.yaml#/~1user~1{userId}"
   /user/signup:

@@ -1,34 +1,15 @@
-/user:
-  post:
-    tags:
-      - User
-    summary: 유저 생성
-    consumes:
-      - application/json
-    requestBody:
-      x-name: body
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: './openapi.yaml#/components/schemas/user'
-          examples:
-            userExample:
-              $ref: './openapi.yaml#/components/examples/userExample'
-    responses:
-      '200':
-        $ref: './openapi.yaml#/components/responses/successResponse'
-      '400':
-        $ref: './openapi.yaml#/components/responses/BadRequest'
-      '500':
-        $ref: './openapi.yaml#/components/responses/InternalServerError'
-
 /user/{userId}:
   get:
     tags:
       - User
     summary: 유저 정보 조회
     parameters:
+      - in: path
+        name: userId
+        required: true
+        description: 조회하려는 유저의 오브젝트 아이디
+        schema:
+          type: string
     responses:
       '200':
         description: 유저 조회 성공
@@ -42,8 +23,63 @@
                 "message": "유저 조회 성공",
                 "data": {
                   "_id": "6283a755c2f673e5e81a6fea",
+                  "profilePhoto": "s3.dfjkkenfd.com/yeri.png",
                   "email": "validateTest-email2@naver.com",
-                  "nickname": "홍길동",
+                  "nickname": "김예리",
+                  "success_rate_uploaded_songs": "3499",
+                  "accepted_playlists": "6283a755c2f673e5e81a6fea",
+                  "rejected_playlists": "6283a755c2f673e5e81a6fea",
+                }
+              }
+      '400':
+        $ref: './openapi.yaml#/components/responses/BadRequest'
+      '500':
+        $ref: './openapi.yaml#/components/responses/InternalServerError'
+
+
+  put:
+    tags:
+      - User
+    summary: 유저 정보 수정
+    parameters:
+      - in: path
+        name: nickname
+        required: false
+        description: 유저 정보를 수정하려는 회원의 닉네임
+        schema:
+          type: string
+      - in: path
+        name: profilePhoto
+        required: false
+        description: 유저 정보를 수정하려는 회원의 프로필 사진
+        schema:
+          type: string
+    consumes:
+      - application/json
+    requestBody:
+      description: \[Optional\] nickname, profilePhoto
+      x-name: body
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: './openapi.yaml#/components/schemas/user'
+    responses:
+      '200':
+        description: 유저 수정 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {
+              "status": 200,
+                "success": true,
+                "message": "유저 수정 성공",
+                "data": {
+                  "_id": "6283a755c2f673e5e81a6fea",
+                  "profilePhoto": "new.s3.dfjkkenfd.com/yeri.png",
+                  "email": "validateTest-email2@naver.com",
+                  "nickname": "new김예리",
                   "success_rate_uploaded_songs": "3499",
                   "accepted_playlists": "6283a755c2f673e5e81a6fea",
                   "rejected_playlists": "6283a755c2f673e5e81a6fea",
