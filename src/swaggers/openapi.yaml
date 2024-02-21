@@ -89,3 +89,5 @@ paths:
     $ref: "./user.yaml#/~1user~1login"
   /user/password:
     $ref: "./user.yaml#/~1user~1password"
+  /user/logout:
+    $ref: "./user.yaml#/~1user~1logout"
