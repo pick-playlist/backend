@@ -121,19 +121,19 @@
       - in: path
         name: email
         required: false
-        description: 회원가입하려는 사용자의 아이디
+        description: 로그인하려는 사용자의 아이디
         schema:
           type: string
       - in: path
         name: password
         required: false
-        description: 회원가입하려는 사용자의 패스워드
+        description: 로그인하려는 사용자의 패스워드
         schema:
           type: string
       - in: path
         name: nickname
         required: true
-        description: 회원가입하려는 사용자의 닉네임
+        description: 로그인하려는 사용자의 닉네임
         schema:
           type: string
       - in: path
