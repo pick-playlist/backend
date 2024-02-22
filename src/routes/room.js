@@ -65,7 +65,7 @@ async function isUnique(code) {
   return true;
 }
 
-router.get("/", async function (req, res, next) {
+router.get("/info", async function (req, res, next) {
   try {
     const { id, code } = req.body;
 
@@ -81,7 +81,7 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-router.post("/user", async function (req, res, next) {
+router.put("/user", async function (req, res, next) {
   try {
     const { roomId, userId } = req.body;
 
@@ -110,4 +110,5 @@ router.delete("/user", async function (req, res, next) {
     res.send(err);
   }
 });
+
 module.exports = router;

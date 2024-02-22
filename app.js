@@ -11,6 +11,7 @@ const { connectDB } = require("./src/utils/db");
 const indexRouter = require("./src/routes/index");
 const userRouter = require("./src/routes/user");
 const roomRouter = require("./src/routes/room");
+const musicRouter = require("./src/routes/music");
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/", indexRouter);
 app.use("/api/user", userRouter);
 app.use("/api/room", roomRouter);
+app.use("/api/music", musicRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
