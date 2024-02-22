@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const User = require("../models/User");
 const { createToken, verifyToken } = require("../utils/auth");
+const mongoose = require("mongoose");
 
 router.get("/", function (req, res, next) {
   User.find()
@@ -71,6 +72,31 @@ router.post("/guest-login", async (req, res, next) => {
     res.status(400);
     next(err);
   }
+});
+
+// id로 조회
+router.get("/:userId", function (req, res, next) {
+  const { userId } = req.params;
+
+  User.findById(userId)
+    .then((data) => {
+      if (!data)
+        return res.status(404).json({
+          error: {
+            title: "Bad request",
+            msg: "User not found.",
+          },
+        });
+      res.json(data);
+    })
+    .catch((err) => {
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res
+          .status(404)
+          .json({ error: { title: "Bad request", msg: "Invalid user id." } });
+      }
+      return next(err);
+    });
 });
 
 module.exports = router;
