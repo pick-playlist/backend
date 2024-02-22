@@ -9,7 +9,8 @@ const YAML = require("yamljs");
 const { connectDB } = require("./src/utils/db");
 
 const indexRouter = require("./src/routes/index");
-const usersRouter = require("./src/routes/user");
+const userRouter = require("./src/routes/user");
+const roomRouter = require("./src/routes/room");
 
 const app = express();
 
@@ -27,7 +28,8 @@ const swaggerSpec = YAML.load(path.join(__dirname, "./build/swagger.yaml"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/", indexRouter);
-app.use("/api/user", usersRouter);
+app.use("/api/user", userRouter);
+app.use("/api/room", roomRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
