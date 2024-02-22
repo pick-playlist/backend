@@ -15,9 +15,9 @@ router.get("/rooms", function (req, res, next) {
   }
 });
 
-router.post("/", async function (req, res, next) {
+router.post("/create/:userId", async function (req, res, next) {
   try {
-    const { userId } = req.body;
+    const userId = req.params.userId;
     const code = getCode();
 
     const currentMusic = await Music.create({
@@ -76,9 +76,15 @@ async function isUnique(code) {
 
 router.get("/", async function (req, res, next) {
   try {
-    const { code } = req.body;
-    const room = await Room.findOne({ code: code });
-    res.send(room);
+    const { id, code } = req.body;
+
+    if (id) {
+      const room = await Room.findOne({ _id: id });
+      res.send(room);
+    } else if (code) {
+      const room = await Room.findOne({ code: code });
+      res.send(room);
+    }
   } catch (err) {
     res.send(err);
   }
