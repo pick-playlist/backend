@@ -99,4 +99,34 @@ router.get("/:userId", function (req, res, next) {
     });
 });
 
+// 일부 유저 조회
+router.post("/", function (req, res, next) {
+  const { userIds } = req.body;
+
+  const areValidUserIds = userIds.every((userId) =>
+    mongoose.Types.ObjectId.isValid(userId)
+  );
+
+  if (!areValidUserIds) {
+    return res
+      .status(400)
+      .json({ error: { title: "Bad request", msg: "Invalid user id." } });
+  }
+
+  User.find({ _id: { $in: userIds } })
+    .then((data) => {
+      if (!data)
+        return res.status(404).json({
+          error: {
+            title: "Bad request",
+            msg: "Users not found.",
+          },
+        });
+      res.json(data);
+    })
+    .catch((err) => {
+      return next(err);
+    });
+});
+
 module.exports = router;
