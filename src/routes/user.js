@@ -4,6 +4,8 @@ const User = require("../models/User");
 const { createToken, verifyToken } = require("../utils/auth");
 const mongoose = require("mongoose");
 
+const TOKEN_MAX_AGE = 60 * 60 * 24 * 3;
+
 router.get("/", function (req, res, next) {
   User.find()
     .then((data) => {
@@ -44,14 +46,12 @@ router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     user = await User.memberLogin(email, password);
-    const tokenMaxAge = 60 * 60 * 24 * 3;
-    const token = createToken(user, tokenMaxAge);
-
+    const token = createToken(user, TOKEN_MAX_AGE);
     user.token = token;
 
     res.cookie("authToken", token, {
       httpOnly: true,
-      maxAge: tokenMaxAge * 1000,
+      maxAge: TOKEN_MAX_AGE * 1000,
     });
 
     res.status(201).json(user);
@@ -66,6 +66,14 @@ router.post("/guest-login", async (req, res, next) => {
   try {
     const { nickname } = req.body;
     const user = await User.guestLogin(nickname);
+    const token = createToken(user, TOKEN_MAX_AGE);
+    user.token = token;
+
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      maxAge: TOKEN_MAX_AGE * 1000,
+    });
+
     res.status(201).json(user);
   } catch (err) {
     console.log(err);
