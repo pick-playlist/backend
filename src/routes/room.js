@@ -6,18 +6,9 @@ const Playlist = require("../models/Playlist");
 const Room = require("../models/Room");
 const User = require("../models/User");
 
-router.get("/rooms", function (req, res, next) {
+router.post("/create", async function (req, res, next) {
   try {
-    const rooms = Room.find({});
-    res.send(rooms);
-  } catch (err) {
-    console.log("get err: ", err);
-  }
-});
-
-router.post("/create/:userId", async function (req, res, next) {
-  try {
-    const userId = req.params.userId;
+    const { userId } = req.body;
     const code = getCode();
 
     const currentMusic = await Music.create({
@@ -85,6 +76,21 @@ router.get("/", async function (req, res, next) {
       const room = await Room.findOne({ code: code });
       res.send(room);
     }
+  } catch (err) {
+    res.send(err);
+  }
+});
+
+router.post("/user", async function (req, res, next) {
+  try {
+    const { roomId, userId } = req.body;
+
+    const room = await Room.findByIdAndUpdate(
+      roomId,
+      { $push: { users: userId } },
+      { new: true }
+    );
+    res.send(room);
   } catch (err) {
     res.send(err);
   }
