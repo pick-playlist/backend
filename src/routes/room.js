@@ -96,4 +96,18 @@ router.post("/user", async function (req, res, next) {
   }
 });
 
+router.delete("/user", async function (req, res, next) {
+  try {
+    const { roomId, userId } = req.body;
+
+    const room = await Room.findByIdAndUpdate(
+      roomId,
+      { $pull: { users: userId } },
+      { new: true }
+    );
+    res.send(room);
+  } catch (err) {
+    res.send(err);
+  }
+});
 module.exports = router;
