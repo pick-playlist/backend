@@ -6,7 +6,7 @@ const Playlist = require("../models/Playlist");
 const Room = require("../models/Room");
 const User = require("../models/User");
 
-router.get("/", function (req, res, next) {
+router.get("/rooms", function (req, res, next) {
   try {
     const rooms = Room.find({});
     res.send(rooms);
@@ -53,7 +53,7 @@ router.post("/", async function (req, res, next) {
 
     res.send(room);
   } catch (err) {
-    console.log("post err: ", err);
+    res.send(err);
   }
 });
 
@@ -73,5 +73,15 @@ async function isUnique(code) {
   }
   return true;
 }
+
+router.get("/", async function (req, res, next) {
+  try {
+    const { code } = req.body;
+    const room = await Room.findOne({ code: code });
+    res.send(room);
+  } catch (err) {
+    res.send(err);
+  }
+});
 
 module.exports = router;
