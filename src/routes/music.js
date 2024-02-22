@@ -24,4 +24,15 @@ router.post("/", async function (req, res, next) {
   } catch (err) {}
 });
 
+router.get("/info", async function (req, res, next) {
+  try {
+    const { id } = req.body;
+
+    const music = await Music.findOne({ _id: id });
+    res.send(music);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
 module.exports = router;
