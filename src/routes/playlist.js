@@ -21,11 +21,18 @@ router.get("/info/:playlistId", async function (req, res, next) {
 
 router.put("/music", async function (req, res, next) {
   try {
-    const { musicId, playlistId } = req.body;
+    const { musicId, playlistId, isAdd } = req.body;
+
+    let updateQuery = {};
+    if (isAdd) {
+      updateQuery = { $push: { musics: musicId } };
+    } else {
+      updateQuery = { $pull: { musics: musicId } };
+    }
 
     const updatedPlaylist = await Playlist.findByIdAndUpdate(
       playlistId,
-      { $push: { musics: musicId } },
+      updateQuery,
       { new: true }
     );
     res.send(updatedPlaylist);
@@ -34,19 +41,19 @@ router.put("/music", async function (req, res, next) {
   }
 });
 
-router.delete("/music", async function (req, res, next) {
-  try {
-    const { musicId, playlistId } = req.body;
+// router.delete("/music", async function (req, res, next) {
+//   try {
+//     const { musicId, playlistId } = req.body;
 
-    const updatedPlaylist = await Playlist.findByIdAndUpdate(
-      playlistId,
-      { $pull: { musics: musicId } },
-      { new: true }
-    );
-    res.send(updatedPlaylist);
-  } catch (err) {
-    res.send(err);
-  }
-});
+//     const updatedPlaylist = await Playlist.findByIdAndUpdate(
+//       playlistId,
+//       { $pull: { musics: musicId } },
+//       { new: true }
+//     );
+//     res.send(updatedPlaylist);
+//   } catch (err) {
+//     res.send(err);
+//   }
+// });
 
 module.exports = router;
