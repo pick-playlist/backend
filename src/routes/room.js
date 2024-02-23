@@ -65,17 +65,21 @@ async function isUnique(code) {
   return true;
 }
 
-router.get("/info", async function (req, res, next) {
+router.get("/info/id/:roomId", async function (req, res, next) {
   try {
-    const { roomId, code } = req.body;
+    const roomId = req.params.roomId;
+    const room = await Room.findOne({ _id: roomId });
+    res.send(room);
+  } catch (err) {
+    res.send(err);
+  }
+});
 
-    if (roomId) {
-      const room = await Room.findOne({ _id: roomId });
-      res.send(room);
-    } else if (code) {
-      const room = await Room.findOne({ code: code });
-      res.send(room);
-    }
+router.get("/info/code/:roomCode", async function (req, res, next) {
+  try {
+    const roomCode = req.params.roomCode;
+    const room = await Room.findOne({ code: roomCode });
+    res.send(room);
   } catch (err) {
     res.send(err);
   }
@@ -83,32 +87,37 @@ router.get("/info", async function (req, res, next) {
 
 router.put("/user", async function (req, res, next) {
   try {
-    const { roomId, userId } = req.body;
+    const { roomId, userId, isAdd } = req.body;
 
-    const room = await Room.findByIdAndUpdate(
-      roomId,
-      { $push: { users: userId } },
-      { new: true }
-    );
-    res.send(room);
+    let updateQuery = {};
+    if (isAdd) {
+      updateQuery = { $push: { users: userId } };
+    } else {
+      updateQuery = { $pull: { users: userId } };
+    }
+
+    const updatedRoom = await Room.findByIdAndUpdate(roomId, updateQuery, {
+      new: true,
+    });
+    res.send(updatedRoom);
   } catch (err) {
     res.send(err);
   }
 });
 
-router.delete("/user", async function (req, res, next) {
-  try {
-    const { roomId, userId } = req.body;
+// router.delete("/user", async function (req, res, next) {
+//   try {
+//     const { roomId, userId } = req.body;
 
-    const room = await Room.findByIdAndUpdate(
-      roomId,
-      { $pull: { users: userId } },
-      { new: true }
-    );
-    res.send(room);
-  } catch (err) {
-    res.send(err);
-  }
-});
+//     const room = await Room.findByIdAndUpdate(
+//       roomId,
+//       { $pull: { users: userId } },
+//       { new: true }
+//     );
+//     res.send(room);
+//   } catch (err) {
+//     res.send(err);
+//   }
+// });
 
 module.exports = router;

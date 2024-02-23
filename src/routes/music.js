@@ -26,9 +26,9 @@ router.post("/", async function (req, res, next) {
   }
 });
 
-router.get("/info", async function (req, res, next) {
+router.get("/info/:musicId", async function (req, res, next) {
   try {
-    const { musicId } = req.body;
+    const musicId = req.params.musicId;
 
     const music = await Music.findOne({ _id: musicId });
     res.send(music);
