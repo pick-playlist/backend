@@ -88,5 +88,3 @@ paths:
     $ref: "./user.yaml#/~1user~1login"
   /api/user/guest-login:
     $ref: "./user.yaml#/~1user~1guest-login"
-  /api/user/logout:
-    $ref: "./user.yaml#/~1user~1logout"

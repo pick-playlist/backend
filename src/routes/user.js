@@ -85,33 +85,6 @@ router.post("/guest-login", async (req, res, next) => {
   }
 });
 
-router.all("/logout", async (req, res, next) => {
-  try {
-    let token;
-    // 회원일 경우 email, password
-    if (req.body.email && req.body.password) {
-      const user = await User.memberLogin(req.body.email, req.body.password);
-      token = createToken(user, TOKEN_MAX_AGE);
-    }
-    // 비회원일 경우 nickname
-    else if (req.body.nickname) {
-      const user = await User.guestLogin(req.body.nickname);
-      token = createToken(user, TOKEN_MAX_AGE);
-    }
-
-    res.cookie("authToken", token, {
-      httpOnly: true,
-      expires: new Date(Date.now()),
-    });
-
-    res.json({ message: "Success logout" });
-  } catch (err) {
-    console.log(err);
-    res.status(400).json(createError("Failed logout."));
-    next(err);
-  }
-});
-
 // id로 조회
 router.get("/:userId", function (req, res, next) {
   const { userId } = req.params;
