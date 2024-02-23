@@ -1,4 +1,47 @@
-/user/{userId}:
+/user:
+  get: 
+    tags:
+      - User
+    summary: 모든 유저 정보 조회
+    responses:
+      '200':
+        description: 유저 조회 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {
+              "status": 200,
+                "success": true,
+                "message": "유저 조회 성공",
+                "data": [
+                          {
+                              "_id": "65d6f115b32758d2cd0559fd",
+                              "email": "qqff0311@naver.com",
+                              "nickname": "다시 유현쓰!",
+                              "password": "$2b$10$PSDg3HpHqvUrgmtHNmS8HuH9PDkhzz0j/xOl1kvERwV4VqSh4jxZW",
+                              "playlist": "65d6f115b32758d2cd0559f7",
+                              "acceptPlaylist": "65d6f115b32758d2cd0559f9",
+                              "rejectPlaylist": "65d6f115b32758d2cd0559fb",
+                              "__v": 0,
+                              "isMember": true,
+                              "profilePhoto": "https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg"
+                          },
+                          {
+                              "profilePhoto": "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fcdn3d.iconscout.com%2F3d%2Fpremium%2Fthumb%2Fuser-4620688-3833029.png%3Ff%3Dwebp",
+                              "_id": "65d6f6598a9174603ee342ac",
+                              "nickname": "비회원쓰",
+                              "isMember": false,
+                              "__v": 0
+                          },
+                        ]
+              }
+      '400':
+        $ref: './openapi.yaml#/components/responses/BadRequest'
+      '500':
+        $ref: './openapi.yaml#/components/responses/InternalServerError'
+
+/user/:userId:
   get:
     tags:
       - User

@@ -79,13 +79,15 @@ components:
             message: 서버 내부 오류
 #Paths api 경로 지정
 paths:
-  /user/{userId}:
-    $ref: "./user.yaml#/~1user~1{userId}"
-  /user/signup:
+  /api/user:
+    $ref: "./user.yaml#/~1user"
+  /api/user/:userId:
+    $ref: "./user.yaml#/~1user~1:userId"
+  /api/user/signup:
     $ref: "./user.yaml#/~1user~1signup"
-  /user/login:
+  /api/user/login:
     $ref: "./user.yaml#/~1user~1login"
-  /user/password:
+  /api/user/password:
     $ref: "./user.yaml#/~1user~1password"
-  /user/logout:
+  /api/user/logout:
     $ref: "./user.yaml#/~1user~1logout"
