@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: false },
   nickname: { type: String, required: true },
   password: { type: String, required: false },
-  photoUrl: { type: String, required: false, default: DEFAULT_USER_PHOTO },
+  profilePhoto: { type: String, required: false, default: DEFAULT_USER_PHOTO },
   isMember: { type: Boolean, required: true },
   playlist: {
     type: mongoose.Schema.Types.ObjectId,
@@ -35,6 +35,8 @@ visibleUser.get(function (value, virtual, doc) {
     _id: doc._id,
     email: doc.email,
     nickname: doc.nickname,
+    profilePhoto: doc.profilePhoto,
+    isMember: doc.isMember,
   };
 });
 
