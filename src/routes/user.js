@@ -134,6 +134,33 @@ router.get("/:userId", function (req, res, next) {
     });
 });
 
+// 유저 정보 수정
+router.put("/:userId", function (req, res, next) {
+  const { userId } = req.params;
+  const updatedData = req.body;
+
+  User.findByIdAndUpdate(userId, updatedData, { returnOriginal: false })
+    .then((user) => {
+      if (!user)
+        return res.status(404).json({
+          error: {
+            title: "Bad request",
+            msg: "User not found.",
+          },
+        });
+      res.json(user.visibleUser);
+    })
+
+    .catch((err) => {
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res
+          .status(404)
+          .json({ error: { title: "Bad request", msg: "Invalid user id." } });
+      }
+      return next(err);
+    });
+});
+
 // 일부 유저 조회
 router.post("/", function (req, res, next) {
   const { userIds } = req.body;
