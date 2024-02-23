@@ -87,7 +87,14 @@ router.get("/info/code/:roomCode", async function (req, res, next) {
 
 router.put("/user", async function (req, res, next) {
   try {
-    const { roomId, userId } = req.body;
+    const { roomId, userId, isAdd } = req.body;
+
+    let updateQuery = {};
+    if (isAdd) {
+      updateQuery = { $push: { users: userId } };
+    } else {
+      updateQuery = { $pull: { users: userId } };
+    }
 
     const room = await Room.findByIdAndUpdate(
       roomId,
@@ -100,19 +107,19 @@ router.put("/user", async function (req, res, next) {
   }
 });
 
-router.delete("/user", async function (req, res, next) {
-  try {
-    const { roomId, userId } = req.body;
+// router.delete("/user", async function (req, res, next) {
+//   try {
+//     const { roomId, userId } = req.body;
 
-    const room = await Room.findByIdAndUpdate(
-      roomId,
-      { $pull: { users: userId } },
-      { new: true }
-    );
-    res.send(room);
-  } catch (err) {
-    res.send(err);
-  }
-});
+//     const room = await Room.findByIdAndUpdate(
+//       roomId,
+//       { $pull: { users: userId } },
+//       { new: true }
+//     );
+//     res.send(room);
+//   } catch (err) {
+//     res.send(err);
+//   }
+// });
 
 module.exports = router;
