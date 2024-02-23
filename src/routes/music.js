@@ -57,4 +57,12 @@ router.put("/vote", async function (req, res, next) {
   }
 });
 
+router.put("/search", async function (req, res, next) {
+  try {
+    const { link } = req.body;
+  } catch (err) {
+    res.send(err);
+  }
+});
+
 module.exports = router;
