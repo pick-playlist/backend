@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const playlistSchema = new mongoose.Schema({
+const roomSchema = new mongoose.Schema({
   code: { type: String, required: true },
   users: [
     { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -8,7 +8,6 @@ const playlistSchema = new mongoose.Schema({
   currentMusicId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Music",
-    required: true,
   },
   remainPlaylist: {
     type: mongoose.Schema.Types.ObjectId,
@@ -27,5 +26,5 @@ const playlistSchema = new mongoose.Schema({
   },
 });
 
-const Playlist = mongoose.model("Playlist", playlistSchema);
-module.exports = Playlist;
+const Room = mongoose.model("Room", roomSchema);
+module.exports = Room;

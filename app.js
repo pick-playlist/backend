@@ -9,12 +9,15 @@ const YAML = require("yamljs");
 const { connectDB } = require("./src/utils/db");
 
 const indexRouter = require("./src/routes/index");
-const usersRouter = require("./src/routes/user");
+const userRouter = require("./src/routes/user");
+const roomRouter = require("./src/routes/room");
+const musicRouter = require("./src/routes/music");
+const playlistRouter = require("./src/routes/playlist");
 
 const app = express();
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "src", "views"));
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
@@ -27,7 +30,10 @@ const swaggerSpec = YAML.load(path.join(__dirname, "./build/swagger.yaml"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/", indexRouter);
-app.use("/api/user", usersRouter);
+app.use("/api/user", userRouter);
+app.use("/api/room", roomRouter);
+app.use("/api/music", musicRouter);
+app.use("/api/playlist", playlistRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
