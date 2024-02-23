@@ -96,12 +96,10 @@ router.put("/user", async function (req, res, next) {
       updateQuery = { $pull: { users: userId } };
     }
 
-    const room = await Room.findByIdAndUpdate(
-      roomId,
-      { $push: { users: userId } },
-      { new: true }
-    );
-    res.send(room);
+    const updatedRoom = await Room.findByIdAndUpdate(roomId, updateQuery, {
+      new: true,
+    });
+    res.send(updatedRoom);
   } catch (err) {
     res.send(err);
   }
