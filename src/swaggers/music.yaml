@@ -1,0 +1,133 @@
+/music:
+  post:
+    tags:
+      - Music
+    summary: 노래 생성
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: 등록하려는 노래 제목
+                example: 밤양갱
+              artist:
+                type: string
+                description: 등록하려는 노래의 가수
+                example: 비비
+              comment:
+                type: string
+                description: 어필할 코멘트
+                example: 한번만 들어줘 소원이야 ...
+              proposer:
+                type: string
+                description: 등록한 유저의 오브젝트 아이디
+                example: 65d6f115b32758d2cd0559fd
+              link:
+                type: "https://www.youtube.com/watch?v=EVJjmMW7eII"
+                description: 노래 재생할 유튜브 링크
+                example: 65d6f115b32758d2cd0559fd
+    responses:
+      "200":
+        description: 노래 등록 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                {
+                  "title": "밤양갱",
+                  "artist": "비비",
+                  "comment": "한번만 들어줘 소원이야 ...",
+                  "link": "65d6f115b32758d2cd0559fd",
+                  "agree": 0,
+                  "reject": 0,
+                  "_id": "65d83186c8376fd5fcf9f958",
+                  "__v": 0,
+                }
+      "400":
+        $ref: "./openapi.yaml#/components/responses/BadRequest"
+      "500":
+        $ref: "./openapi.yaml#/components/responses/InternalServerError"
+
+/music/info/{musicId}:
+  get:
+    tags:
+      - Music
+    summary: 노래 정보 조회
+    parameters:
+      - in: path
+        name: musicId
+        required: true
+        description: 조회하려는 노래의 오브젝트 아이디
+        schema:
+          type: string
+        example: 65d7d823c2f71caa93a92e78
+    responses:
+      "200":
+        description: 노래 조회 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                {
+                  "title": "밤양갱",
+                  "artist": "비비",
+                  "comment": "한번만 들어줘 소원이야 ...",
+                  "link": "65d6f115b32758d2cd0559fd",
+                  "agree": 0,
+                  "reject": 0,
+                  "_id": "65d83186c8376fd5fcf9f958",
+                  "__v": 0,
+                }
+      "400":
+        $ref: "./openapi.yaml#/components/responses/BadRequest"
+      "500":
+        $ref: "./openapi.yaml#/components/responses/InternalServerError"
+
+/music/vote:
+  put:
+    tags:
+      - Music
+    summary: 노래 투표
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              musicId:
+                type: string
+                description: 투표하려는 노래 오브젝트 아이디
+                example: 65d83186c8376fd5fcf9f958
+              isAgreed:
+                type: boolean
+                description: 찬성 여부
+                example: true
+    responses:
+      "200":
+        description: 노래 투표 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                {
+                  "_id": "65d83186c8376fd5fcf9f958",
+                  "title": "밤양갱",
+                  "artist": "비비",
+                  "comment": "한번만 들어줘 소원이야 ...",
+                  "link": "65d6f115b32758d2cd0559fd",
+                  "agree": 1,
+                  "reject": 0,
+                  "__v": 0,
+                }
+      "400":
+        $ref: "./openapi.yaml#/components/responses/BadRequest"
+      "500":
+        $ref: "./openapi.yaml#/components/responses/InternalServerError"
