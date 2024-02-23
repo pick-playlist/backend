@@ -10,7 +10,27 @@ router.put("/music", async function (req, res, next) {
   try {
     const { musicId, playlistId } = req.body;
 
-    res.send(newMusic);
+    const updatedPlaylist = await Playlist.findByIdAndUpdate(
+      playlistId,
+      { $push: { musics: musicId } },
+      { new: true }
+    );
+    res.send(updatedPlaylist);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
+router.delete("/music", async function (req, res, next) {
+  try {
+    const { musicId, playlistId } = req.body;
+
+    const updatedPlaylist = await Playlist.findByIdAndUpdate(
+      playlistId,
+      { $pull: { musics: musicId } },
+      { new: true }
+    );
+    res.send(updatedPlaylist);
   } catch (err) {
     res.send(err);
   }
