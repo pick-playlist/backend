@@ -37,4 +37,24 @@ router.get("/info", async function (req, res, next) {
   }
 });
 
+router.put("/vote", async function (req, res, next) {
+  try {
+    const { musicId, isAgreed } = req.body;
+
+    let updateQuery = {};
+    if (isAgreed) {
+      updateQuery = { $inc: { agree: 1 } };
+    } else {
+      updateQuery = { $inc: { reject: 1 } };
+    }
+
+    const updatedMusic = await Music.findByIdAndUpdate(musicId, updateQuery, {
+      new: true,
+    });
+    res.send(updatedMusic);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
 module.exports = router;
