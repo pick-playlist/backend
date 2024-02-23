@@ -117,3 +117,7 @@ paths:
     $ref: "./music.yaml#/~1music~1info~1{musicId}"
   /api/music/vote:
     $ref: "./music.yaml#/~1music~1vote"
+  /api/playlist/info/{playlistId}:
+    $ref: "./playlist.yaml#/~1playlist~1info~1{playlistId}"
+  /api/playlist/music/:
+    $ref: "./playlist.yaml#/~1playlist~1music"
