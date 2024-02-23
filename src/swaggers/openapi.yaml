@@ -28,29 +28,38 @@ components:
         isMember:
           type: boolean
           description: 멤버 여부
-      music:
-        properties:
-          _id:
-            type: string
-            description: 오브젝트 아이디
-          title:
-            type: string
-            description: 노래 제목
-          comment:
-            type: string
-            description: 노래 등록 시 함께 입력한 코멘트
-          proposer:
-            type: ObjectId
-            description: 노래 등록한 유저
-          link:
-            type: string
-            description: 노래 유튜브 링크
-          agree:
-            type: number
-            description: 찬성 득표수
-          reject:
-            type: number
-            description: 반대 득표수
+    music:
+      properties:
+        _id:
+          type: string
+          description: 오브젝트 아이디
+        title:
+          type: string
+          description: 노래 제목
+        comment:
+          type: string
+          description: 노래 등록 시 함께 입력한 코멘트
+        proposer:
+          type: ObjectId
+          description: 노래 등록한 유저
+        link:
+          type: string
+          description: 노래 유튜브 링크
+        agree:
+          type: number
+          description: 찬성 득표수
+        reject:
+          type: number
+          description: 반대 득표수
+    playlist:
+      properties:
+        _id:
+          type: string
+          description: 오브젝트 아이디
+        musics:
+          type: Array<Music>
+          description: 들어있는 노래 목록
+
     Error:
       type: object
       properties:
