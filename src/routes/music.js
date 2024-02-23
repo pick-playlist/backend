@@ -21,14 +21,16 @@ router.post("/", async function (req, res, next) {
     });
 
     res.send(newMusic);
-  } catch (err) {}
+  } catch (err) {
+    res.send(err);
+  }
 });
 
 router.get("/info", async function (req, res, next) {
   try {
-    const { id } = req.body;
+    const { musicId } = req.body;
 
-    const music = await Music.findOne({ _id: id });
+    const music = await Music.findOne({ _id: musicId });
     res.send(music);
   } catch (err) {
     res.send(err);

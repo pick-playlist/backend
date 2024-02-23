@@ -67,10 +67,10 @@ async function isUnique(code) {
 
 router.get("/info", async function (req, res, next) {
   try {
-    const { id, code } = req.body;
+    const { roomId, code } = req.body;
 
-    if (id) {
-      const room = await Room.findOne({ _id: id });
+    if (roomId) {
+      const room = await Room.findOne({ _id: roomId });
       res.send(room);
     } else if (code) {
       const room = await Room.findOne({ code: code });
