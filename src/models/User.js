@@ -51,7 +51,7 @@ userSchema.statics.signUp = async function (email = null, nickname, password) {
     console.log(salt);
 
     const hashedPassword = await bcrypt.hash(password, salt);
-    const isMemeber = true;
+    const isMember = true;
 
     // 빈 플레이 리스트 부여
     const playlist = (await Playlist.create({ musics: [] }))._id;
@@ -61,7 +61,7 @@ userSchema.statics.signUp = async function (email = null, nickname, password) {
       email,
       nickname,
       password: hashedPassword,
-      isMemeber,
+      isMember,
       playlist,
       acceptPlaylist,
       rejectPlaylist,
