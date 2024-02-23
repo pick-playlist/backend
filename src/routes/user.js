@@ -3,6 +3,7 @@ var router = express.Router();
 const User = require("../models/User");
 const { createToken, verifyToken } = require("../utils/auth");
 const mongoose = require("mongoose");
+const { createError, BAD_REQUEST } = require("../utils/error");
 
 const TOKEN_MAX_AGE = 60 * 60 * 24 * 3;
 
@@ -25,12 +26,14 @@ router.post("/signup", async (req, res, next) => {
     const isDuplicatedEmail = await User.isDuplicatedEmail(email);
 
     if (isDuplicatedEmail)
-      return res.status(409).json({
-        error: {
-          title: "Bad request",
-          msg: "This email is already in use. Please use a different email.",
-        },
-      });
+      return res
+        .status(409)
+        .json(
+          createError(
+            BAD_REQUEST,
+            "This email is already in use. Please use a different email."
+          )
+        );
     else {
       const user = await User.signUp(email, nickname, password);
       res.status(201).json(user);
@@ -57,7 +60,7 @@ router.post("/login", async (req, res, next) => {
     res.status(201).json(user);
   } catch (err) {
     console.log(err);
-    res.status(400);
+    res.status(400).json(createError("Failed login."));
     next(err);
   }
 });
@@ -104,7 +107,7 @@ router.all("/logout", async (req, res, next) => {
     res.json({ message: "Success logout" });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ message: "Failed logout" });
+    res.status(400).json(createError("Failed logout."));
     next(err);
   }
 });
@@ -114,21 +117,18 @@ router.get("/:userId", function (req, res, next) {
   const { userId } = req.params;
 
   User.findById(userId)
-    .then((data) => {
-      if (!data)
-        return res.status(404).json({
-          error: {
-            title: "Bad request",
-            msg: "User not found.",
-          },
-        });
-      res.json(data);
+    .then((user) => {
+      if (!user)
+        return res
+          .status(404)
+          .json(createError(BAD_REQUEST, "User not found."));
+      res.json(user.visibleUser);
     })
     .catch((err) => {
       if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res
           .status(404)
-          .json({ error: { title: "Bad request", msg: "Invalid user id." } });
+          .json(createError(BAD_REQUEST, "Invalid user id."));
       }
       return next(err);
     });
@@ -142,12 +142,9 @@ router.put("/:userId", function (req, res, next) {
   User.findByIdAndUpdate(userId, updatedData, { returnOriginal: false })
     .then((user) => {
       if (!user)
-        return res.status(404).json({
-          error: {
-            title: "Bad request",
-            msg: "User not found.",
-          },
-        });
+        return res
+          .status(404)
+          .json(createError(BAD_REQUEST, "User not found."));
       res.json(user.visibleUser);
     })
 
@@ -155,7 +152,7 @@ router.put("/:userId", function (req, res, next) {
       if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res
           .status(404)
-          .json({ error: { title: "Bad request", msg: "Invalid user id." } });
+          .json(createError(BAD_REQUEST, "Invalid user id."));
       }
       return next(err);
     });
@@ -170,9 +167,7 @@ router.post("/", function (req, res, next) {
   );
 
   if (!areValidUserIds) {
-    return res
-      .status(400)
-      .json({ error: { title: "Bad request", msg: "Invalid user id." } });
+    return res.status(400).json(createError(BAD_REQUEST, "Invalid user id."));
   }
 
   User.find({ _id: { $in: userIds } })
