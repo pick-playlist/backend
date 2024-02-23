@@ -65,17 +65,21 @@ async function isUnique(code) {
   return true;
 }
 
-router.get("/info", async function (req, res, next) {
+router.get("/info/id/:roomId", async function (req, res, next) {
   try {
-    const { roomId, code } = req.body;
+    const roomId = req.params.roomId;
+    const room = await Room.findOne({ _id: roomId });
+    res.send(room);
+  } catch (err) {
+    res.send(err);
+  }
+});
 
-    if (roomId) {
-      const room = await Room.findOne({ _id: roomId });
-      res.send(room);
-    } else if (code) {
-      const room = await Room.findOne({ code: code });
-      res.send(room);
-    }
+router.get("/info/code/:roomCode", async function (req, res, next) {
+  try {
+    const roomCode = req.params.roomCode;
+    const room = await Room.findOne({ code: roomCode });
+    res.send(room);
   } catch (err) {
     res.send(err);
   }
