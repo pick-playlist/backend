@@ -59,7 +59,29 @@ components:
         musics:
           type: Array<Music>
           description: 들어있는 노래 목록
-
+    room:
+      properties:
+        _id:
+          type: string
+          description: 오브젝트 아이디
+        code:
+          type: string
+          description: 방 코드
+        users:
+          type: Array<User>
+          description: 들어있는 유저 목록
+        currentMusicId:
+          type: music
+          description: 현재 재생중인 노래의 오브젝트 아이디
+        remainPlaylist:
+          type: playlist
+          description: 남아있는 재생할 플레이리스트
+        acceptPlaylist:
+          type: playlist
+          description: 찬성된 노래가 들어있는 플레이리스트
+        rejectPlaylist:
+          type: playlist
+          description: 반대된 노래가 들어있는 플레이리스트
     Error:
       type: object
       properties:
@@ -130,3 +152,11 @@ paths:
     $ref: "./playlist.yaml#/~1playlist~1info~1{playlistId}"
   /api/playlist/music/:
     $ref: "./playlist.yaml#/~1playlist~1music"
+  /api/room/create/:
+    $ref: "./room.yaml#/~1room~1create"
+  /api/room/info/id/{roomId}:
+    $ref: "./room.yaml#/~1room~1info~1id~1{roomId}"
+  /api/room/info/code/{roomCode}:
+    $ref: "./room.yaml#/~1room~1info~1code~1{roomCode}"
+  /api/room/user:
+    $ref: "./room.yaml#/~1room~1user"
