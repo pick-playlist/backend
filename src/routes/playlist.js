@@ -6,6 +6,17 @@ const Playlist = require("../models/Playlist");
 const Room = require("../models/Room");
 const User = require("../models/User");
 
+router.get("/info", async function (req, res, next) {
+  try {
+    const { playlistId } = req.body;
+
+    const playlist = await Playlist.findById(playlistId).populate("musics");
+    res.send(playlist);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
 router.put("/music", async function (req, res, next) {
   try {
     const { musicId, playlistId } = req.body;
