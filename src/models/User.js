@@ -47,9 +47,18 @@ visibleUser.get(async function (value, virtual, doc) {
     nickname: doc.nickname,
     profilePhoto: doc.profilePhoto,
     isMember: doc.isMember,
-    playlist: playlist ? playlist.musics : [],
-    acceptPlaylist: acceptPlaylist ? acceptPlaylist.musics : [],
-    rejectPlaylist: rejectPlaylist ? rejectPlaylist.musics : [],
+    playlist: {
+      _id: doc.playlist._id,
+      data: playlist ? playlist.musics : [],
+    },
+    acceptPlaylist: {
+      _id: doc.acceptPlaylist,
+      data: acceptPlaylist ? acceptPlaylist.musics : [],
+    },
+    rejectPlaylist: {
+      _id: doc.rejectPlaylist,
+      data: rejectPlaylist ? acceptPlaylist.musics : [],
+    },
   };
 
   return data;
