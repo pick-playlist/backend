@@ -10,9 +10,7 @@ router.get("/info/:playlistId", async function (req, res, next) {
   try {
     const playlistId = req.params.playlistId;
 
-    const playlist = await Playlist.findOne({ _id: playlistId }).populate(
-      "musics"
-    );
+    const playlist = await Playlist.getPlaylist(playlistId);
     res.send(playlist);
   } catch (err) {
     res.send(err);
