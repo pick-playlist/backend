@@ -30,14 +30,29 @@ const userSchema = new mongoose.Schema({
 });
 
 const visibleUser = userSchema.virtual("visibleUser");
-visibleUser.get(function (value, virtual, doc) {
-  return {
+visibleUser.get(async function (value, virtual, doc) {
+  const playlistPromises = [
+    Playlist.findById(doc.playlist).then((playlist) => playlist || []),
+    Playlist.findById(doc.acceptPlaylist).then((playlist) => playlist || []),
+    Playlist.findById(doc.rejectPlaylist).then((playlist) => playlist || []),
+  ];
+
+  const [playlist, acceptPlaylist, rejectPlaylist] = await Promise.all(
+    playlistPromises
+  );
+
+  const data = {
     _id: doc._id,
     email: doc.email,
     nickname: doc.nickname,
     profilePhoto: doc.profilePhoto,
     isMember: doc.isMember,
+    playlist: playlist ? playlist.musics : [],
+    acceptPlaylist: acceptPlaylist ? acceptPlaylist.musics : [],
+    rejectPlaylist: rejectPlaylist ? rejectPlaylist.musics : [],
   };
+
+  return data;
 });
 
 userSchema.statics.isDuplicatedEmail = async function (email) {

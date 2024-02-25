@@ -4,6 +4,7 @@ const User = require("../models/User");
 const { createToken, verifyToken } = require("../utils/auth");
 const mongoose = require("mongoose");
 const { createError, BAD_REQUEST } = require("../utils/error");
+const Playlist = require("../models/Playlist");
 
 const TOKEN_MAX_AGE = 60 * 60 * 24 * 3;
 
@@ -95,7 +96,10 @@ router.get("/:userId", function (req, res, next) {
         return res
           .status(404)
           .json(createError(BAD_REQUEST, "User not found."));
-      res.json(user.visibleUser);
+
+      user.visibleUser.then((visibleUser) => {
+        res.json(visibleUser);
+      });
     })
     .catch((err) => {
       if (!mongoose.Types.ObjectId.isValid(userId)) {
