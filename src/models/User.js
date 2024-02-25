@@ -30,14 +30,38 @@ const userSchema = new mongoose.Schema({
 });
 
 const visibleUser = userSchema.virtual("visibleUser");
-visibleUser.get(function (value, virtual, doc) {
-  return {
+visibleUser.get(async function (value, virtual, doc) {
+  const playlistPromises = [
+    Playlist.findById(doc.playlist).then((playlist) => playlist || []),
+    Playlist.findById(doc.acceptPlaylist).then((playlist) => playlist || []),
+    Playlist.findById(doc.rejectPlaylist).then((playlist) => playlist || []),
+  ];
+
+  const [playlist, acceptPlaylist, rejectPlaylist] = await Promise.all(
+    playlistPromises
+  );
+
+  const data = {
     _id: doc._id,
     email: doc.email,
     nickname: doc.nickname,
     profilePhoto: doc.profilePhoto,
     isMember: doc.isMember,
+    playlist: {
+      _id: doc.playlist._id,
+      data: playlist ? playlist.musics : [],
+    },
+    acceptPlaylist: {
+      _id: doc.acceptPlaylist,
+      data: acceptPlaylist ? acceptPlaylist.musics : [],
+    },
+    rejectPlaylist: {
+      _id: doc.rejectPlaylist,
+      data: rejectPlaylist ? acceptPlaylist.musics : [],
+    },
   };
+
+  return data;
 });
 
 userSchema.statics.isDuplicatedEmail = async function (email) {
@@ -51,7 +75,7 @@ userSchema.statics.signUp = async function (email = null, nickname, password) {
     console.log(salt);
 
     const hashedPassword = await bcrypt.hash(password, salt);
-    const isMemeber = true;
+    const isMember = true;
 
     // 빈 플레이 리스트 부여
     const playlist = (await Playlist.create({ musics: [] }))._id;
@@ -61,7 +85,7 @@ userSchema.statics.signUp = async function (email = null, nickname, password) {
       email,
       nickname,
       password: hashedPassword,
-      isMemeber,
+      isMember,
       playlist,
       acceptPlaylist,
       rejectPlaylist,

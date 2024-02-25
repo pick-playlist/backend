@@ -1,0 +1,183 @@
+/room/create:
+  post:
+    tags:
+      - Room
+    summary: 방 생성
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 생성하는 유저의 아이디
+                example: 65d6f115b32758d2cd0559fd
+    responses:
+      "200":
+        description: 방 생성 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                {
+                  "code": "3444",
+                  "users": ["65d6f115b32758d2cd0559fd"],
+                  "remainPlaylist":
+                    {
+                      "musics": [],
+                      "_id": "65d83e6febf0b40f335c166b",
+                      "__v": 0,
+                    },
+                  "acceptPlaylist":
+                    {
+                      "musics": [],
+                      "_id": "65d83e6febf0b40f335c166d",
+                      "__v": 0,
+                    },
+                  "rejectPlaylist":
+                    {
+                      "musics": [],
+                      "_id": "65d83e6febf0b40f335c166f",
+                      "__v": 0,
+                    },
+                  "_id": "65d83e6febf0b40f335c1671",
+                  "__v": 0,
+                }
+      "400":
+        $ref: "./openapi.yaml#/components/responses/BadRequest"
+      "500":
+        $ref: "./openapi.yaml#/components/responses/InternalServerError"
+
+/room/info/id/{roomId}:
+  get:
+    tags:
+      - Room
+    summary: 방 조회(오브젝트 아이디)
+    parameters:
+      - in: path
+        name: roomId
+        required: true
+        description: 조회하려는 방의 오브젝트 아이디
+        schema:
+          type: string
+        example: 65d83e6febf0b40f335c1671
+    responses:
+      "200":
+        description: 방 조회 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                {
+                  "_id": "65d83e6febf0b40f335c1671",
+                  "code": "3444",
+                  "users": ["65d6f115b32758d2cd0559fd"],
+                  "remainPlaylist": "65d83e6febf0b40f335c166b",
+                  "acceptPlaylist": "65d83e6febf0b40f335c166d",
+                  "rejectPlaylist": "65d83e6febf0b40f335c166f",
+                  "__v": 0,
+                }
+      "400":
+        $ref: "./openapi.yaml#/components/responses/BadRequest"
+      "500":
+        $ref: "./openapi.yaml#/components/responses/InternalServerError"
+
+/room/info/code/{roomCode}:
+  get:
+    tags:
+      - Room
+    summary: 방 조회(코드)
+    parameters:
+      - in: path
+        name: roomCode
+        required: true
+        description: 조회하려는 방의 코드
+        schema:
+          type: string
+        example: "3444"
+    responses:
+      "200":
+        description: 방 조회 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                {
+                  "_id": "65d83e6febf0b40f335c1671",
+                  "code": "3444",
+                  "users": ["65d6f115b32758d2cd0559fd"],
+                  "remainPlaylist": "65d83e6febf0b40f335c166b",
+                  "acceptPlaylist": "65d83e6febf0b40f335c166d",
+                  "rejectPlaylist": "65d83e6febf0b40f335c166f",
+                  "__v": 0,
+                }
+      "400":
+        $ref: "./openapi.yaml#/components/responses/BadRequest"
+      "500":
+        $ref: "./openapi.yaml#/components/responses/InternalServerError"
+
+/room/user:
+  put:
+    tags:
+      - Room
+    summary: 방에 유저 추가(삭제)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              roomId:
+                type: string
+                description: 방의 오브젝트 아이디
+                example: 65d83e6febf0b40f335c1671
+              userId:
+                type: string
+                description: 추가(삭제)하려는 유저의 오브젝트 아이디
+                example: 65d6f115b32758d2cd0559fd
+              isAdd:
+                type: string
+                description: true면 추가, false면 삭제
+                example: true
+    responses:
+      "200":
+        description: 방에 유저 추가(삭제)
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                {
+                  "code": "3444",
+                  "users": ["65d6f115b32758d2cd0559fd"],
+                  "remainPlaylist":
+                    {
+                      "musics": [],
+                      "_id": "65d83e6febf0b40f335c166b",
+                      "__v": 0,
+                    },
+                  "acceptPlaylist":
+                    {
+                      "musics": [],
+                      "_id": "65d83e6febf0b40f335c166d",
+                      "__v": 0,
+                    },
+                  "rejectPlaylist":
+                    {
+                      "musics": [],
+                      "_id": "65d83e6febf0b40f335c166f",
+                      "__v": 0,
+                    },
+                  "_id": "65d83e6febf0b40f335c1671",
+                  "__v": 0,
+                }
+      "400":
+        $ref: "./openapi.yaml#/components/responses/BadRequest"
+      "500":
+        $ref: "./openapi.yaml#/components/responses/InternalServerError"

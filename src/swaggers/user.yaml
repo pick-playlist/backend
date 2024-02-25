@@ -1,3 +1,85 @@
+/user:
+  get: 
+    tags:
+      - User
+    summary: 모든 유저 정보 조회
+    responses:
+      '200':
+        description: 유저 조회 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example: [
+                          {
+                              "_id": "65d6f115b32758d2cd0559fd",
+                              "email": "qqff0311@naver.com",
+                              "nickname": "다시 유현쓰!",
+                              "password": "$2b$10$PSDg3HpHqvUrgmtHNmS8HuH9PDkhzz0j/xOl1kvERwV4VqSh4jxZW",
+                              "playlist": "65d6f115b32758d2cd0559f7",
+                              "acceptPlaylist": "65d6f115b32758d2cd0559f9",
+                              "rejectPlaylist": "65d6f115b32758d2cd0559fb",
+                              "__v": 0,
+                              "isMember": true,
+                              "profilePhoto": "https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg"
+                          },
+                          {
+                              "profilePhoto": "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fcdn3d.iconscout.com%2F3d%2Fpremium%2Fthumb%2Fuser-4620688-3833029.png%3Ff%3Dwebp",
+                              "_id": "65d6f6598a9174603ee342ac",
+                              "nickname": "비회원쓰",
+                              "isMember": false,
+                              "__v": 0
+                          },
+                        ]
+              
+  post:
+    tags:
+      - User
+    summary: 일부 유저 정보 조회
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userIds:
+                type: [string]
+                description: 조회하려는 유저의 아이디 배열
+                example: ["65d6f115b32758d2cd0559fd", "65d6f6598a9174603ee342ac"]
+    responses:
+      '200':
+        description: 유저 조회 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example: [
+                          {
+                              "_id": "65d6f115b32758d2cd0559fd",
+                              "email": "qqff0311@naver.com",
+                              "nickname": "다시 유현쓰!",
+                              "password": "$2b$10$PSDg3HpHqvUrgmtHNmS8HuH9PDkhzz0j/xOl1kvERwV4VqSh4jxZW",
+                              "playlist": "65d6f115b32758d2cd0559f7",
+                              "acceptPlaylist": "65d6f115b32758d2cd0559f9",
+                              "rejectPlaylist": "65d6f115b32758d2cd0559fb",
+                              "__v": 0,
+                              "isMember": true,
+                              "profilePhoto": "https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg"
+                          },
+                          {
+                              "profilePhoto": "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fcdn3d.iconscout.com%2F3d%2Fpremium%2Fthumb%2Fuser-4620688-3833029.png%3Ff%3Dwebp",
+                              "_id": "65d6f6598a9174603ee342ac",
+                              "nickname": "비회원쓰",
+                              "isMember": false,
+                              "__v": 0
+                          },
+                        ]
+      '400':
+        $ref: './openapi.yaml#/components/responses/BadRequest'
+      '500':
+        $ref: './openapi.yaml#/components/responses/InternalServerError'
+
 /user/{userId}:
   get:
     tags:
@@ -10,6 +92,8 @@
         description: 조회하려는 유저의 오브젝트 아이디
         schema:
           type: string
+        example:
+          65d6f115b32758d2cd0559fd
     responses:
       '200':
         description: 유저 조회 성공
@@ -17,20 +101,14 @@
           application/json:
             schema:
               type: object
-              example: {
-              "status": 200,
-                "success": true,
-                "message": "유저 조회 성공",
-                "data": {
-                  "_id": "6283a755c2f673e5e81a6fea",
-                  "profilePhoto": "s3.dfjkkenfd.com/yeri.png",
-                  "email": "validateTest-email2@naver.com",
-                  "nickname": "김예리",
-                  "success_rate_uploaded_songs": "3499",
-                  "accepted_playlists": "6283a755c2f673e5e81a6fea",
-                  "rejected_playlists": "6283a755c2f673e5e81a6fea",
+              example: 
+                {
+                  "_id": "65d6f115b32758d2cd0559fd",
+                  "email": "qqff0311@naver.com",
+                  "nickname": "다시 유현쓰!",
+                  "profilePhoto": "https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg",
+                  "isMember": true
                 }
-              }
       '400':
         $ref: './openapi.yaml#/components/responses/BadRequest'
       '500':
@@ -43,47 +121,50 @@
     summary: 유저 정보 수정
     parameters:
       - in: path
-        name: nickname
+        name: userId
         required: false
-        description: 유저 정보를 수정하려는 회원의 닉네임
-        schema:
-          type: string
-      - in: path
-        name: profilePhoto
-        required: false
-        description: 유저 정보를 수정하려는 회원의 프로필 사진
+        description: 정보를 수정하려는 유저의 오브젝트 아이디
+        example:
+          65d6f115b32758d2cd0559fd
         schema:
           type: string
     consumes:
       - application/json
     requestBody:
-      description: \[Optional\] nickname, profilePhoto
+      description: 수정하려는 유저의 정보
       x-name: body
       required: true
       content:
         application/json:
           schema:
-            $ref: './openapi.yaml#/components/schemas/user'
+            type: object
+            properties:
+              nickname:
+                type: string
+                description: 수정하려는 유저의 닉네임  
+                example: "수정유현"
+              email:
+                type: string
+                description: 수정하려는 유저의 이메일 
+                example: "modifytest@test.com"     
+              profilePhoto:
+                type: string
+                description: 수정하려는 유저의 프로필 사진 URL 
+                example: "https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_24_2048x1536.png"   
     responses:
       '200':
         description: 유저 수정 성공
         content:
           application/json:
             schema:
-              type: object
-              example: {
-              "status": 200,
-                "success": true,
-                "message": "유저 수정 성공",
-                "data": {
-                  "_id": "6283a755c2f673e5e81a6fea",
-                  "profilePhoto": "new.s3.dfjkkenfd.com/yeri.png",
-                  "email": "validateTest-email2@naver.com",
-                  "nickname": "new김예리",
-                  "success_rate_uploaded_songs": "3499",
-                  "accepted_playlists": "6283a755c2f673e5e81a6fea",
-                  "rejected_playlists": "6283a755c2f673e5e81a6fea",
-                }
+            type: object
+            example: 
+              {
+                "_id": "65d6f115b32758d2cd0559fd",
+                "email": "modifytest@test.com",
+                "nickname": "수정유현",
+                "profilePhoto": "https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_24_2048x1536.png",
+                "isMember": true
               }
       '400':
         $ref: './openapi.yaml#/components/responses/BadRequest'
@@ -106,12 +187,15 @@
               email:
                 type: string
                 description: 회원가입하려는 사용자의 아이디
+                example: "testuser123@test.com"
               password:
                 type: string
                 description: 회원가입하려는 사용자의 패스워드
+                example: "passwordtest"
               nickname:
                 type: string
                 description: 회원가입하려는 사용자의 닉네임
+                example: "테스트유저"
     responses:
       '200':
         description: 회원 가입 성공
@@ -125,7 +209,7 @@
                 "message": "회원 가입 성공",
                 "data": {
                   "_id": "6283a755c2f673e5e81a6fea",
-                  "nickname": "김예리바보",
+                  "nickname": "테스트유저",
                 }
               }
       '400':
@@ -138,7 +222,7 @@
   post:
     tags:
       - User
-    summary: 로그인
+    summary: 회원 로그인
     requestBody:
       required: true
       content:
@@ -148,16 +232,12 @@
             properties:
               email:
                 type: string
-                description: 로그인하려는 사용자의 아이디
+                description: 로그인하려는 유저의 아이디
+                example: testuser123@test.com
               password:
                 type: string
-                description: 로그인하려는 사용자의 패스워드
-              nickname:
-                type: string
-                description: 로그인하려는 사용자의 닉네임
-              isMember:
-                type: boolean
-                description: 회원 여부(회원 로그인은 true, 비회원 로그인은 false)
+                description: 로그인하려는 유저의 패스워드
+                example: passwordtest
     responses:
       '200':
         description: 로그인 성공
@@ -166,76 +246,47 @@
             schema:
               type: object
               example: {
-              "status": 201,
-                "success": true,
-                "message": "로그인 성공",
-                "data": {
-                  "token": "kaflkj3r432332434lk234lkm"
-                }
+                "_id": "65d82b7ad177dfe8ea641483",
+                "email": "testuser123@test.com",
+                "nickname": "테스트유저",
+                "profilePhoto": "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fcdn3d.iconscout.com%2F3d%2Fpremium%2Fthumb%2Fuser-4620688-3833029.png%3Ff%3Dwebp",
+                "isMember": true,
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWQ4MmI3YWQxNzdkZmU4ZWE2NDE0ODMiLCJlbWFpbCI6InRlc3R1c2VyMTIzQHRlc3QuY29tIiwibmlja25hbWUiOiLthYzsiqTtirjsnKDsoIAiLCJwcm9maWxlUGhvdG8iOiJodHRwczovL3NsYWNrLWltZ3MuY29tLz9jPTEmbzE9cm8mdXJsPWh0dHBzJTNBJTJGJTJGY2RuM2QuaWNvbnNjb3V0LmNvbSUyRjNkJTJGcHJlbWl1bSUyRnRodW1iJTJGdXNlci00NjIwNjg4LTM4MzMwMjkucG5nJTNGZiUzRHdlYnAiLCJpc01lbWJlciI6dHJ1ZSwiaWF0IjoxNzA4NjY1NzYzLCJleHAiOjE3MDg5MjQ5NjN9.tQZzq4o2cK-Ey_YYFzI3xJNhR4qEVSvFgF0byBWLcxE"
               }
       '400':
         $ref: './openapi.yaml#/components/responses/BadRequest'
       '500':
         $ref: './openapi.yaml#/components/responses/InternalServerError'
 
-
-/user/password:
+/user/guest-login:
   post:
     tags:
       - User
-    summary: 비밀번호 찾기
+    summary: 비회원 로그인
     requestBody:
-          required: true
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  email:
-                    type: string
-                    description: 회원가입하려는 사용자의 아이디
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              nickname:
+                type: string
+                description: 로그인하려는 유저의 닉네임
+                example: 비회원쓰
     responses:
       '200':
-        description: 비밀번호 찾기 성공
+        description: 로그인 성공
         content:
           application/json:
             schema:
               type: object
               example: {
-              "status": 200,
-                "success": true,
-                "message": "비밀번호 찾기 성공",
-                "data": {
-                  "password": "kaflkj3r432332434lk234lkm"
-                }
-              }
+                        "_id": "65d82c35d799e0a0cebe3543",
+                        "nickname": "비회원쓰",
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWQ4MmMzNWQ3OTllMGEwY2ViZTM1NDMiLCJuaWNrbmFtZSI6Iuu5hO2ajOybkOyTsCIsImlhdCI6MTcwODY2NTkwOSwiZXhwIjoxNzA4OTI1MTA5fQ.28nuf26MJQ41VNrhiBQLR_lW9RUe5g305sDWtCv8INg"
+                      }
       '400':
         $ref: './openapi.yaml#/components/responses/BadRequest'
       '500':
         $ref: './openapi.yaml#/components/responses/InternalServerError'
-
-
-/user/logout:
-  post:
-    tags:
-      - User
-    summary: 로그아웃
-    parameters:
-    responses:
-      '200':
-        description: 비밀번호 찾기 성공
-        content:
-          application/json:
-            schema:
-              type: object
-              example: {
-              "status": 200,
-                "success": true,
-                "message": "로그아웃 성공",
-              }
-      '400':
-        $ref: './openapi.yaml#/components/responses/BadRequest'
-      '500':
-        $ref: './openapi.yaml#/components/responses/InternalServerError'
-
-

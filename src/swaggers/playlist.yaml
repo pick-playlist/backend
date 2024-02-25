@@ -1,0 +1,87 @@
+/playlist/info/{playlistId}:
+  get:
+    tags:
+      - Playlist
+    summary: 플리 노래 목록 조회하기 (React - getPlaylistInfo(playlistId))
+    parameters:
+      - in: path
+        name: playlistId
+        required: true
+        description: 조회하려는 플레이리스트의 오브젝트 아이디
+        schema:
+          type: string
+        example: 65d6e1eccc7eab58fc815299
+    responses:
+      "200":
+        description: 플레이리스트 조회 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                {
+                  "_id": "65d6e1eccc7eab58fc815299",
+                  "musics":
+                    [
+                      {
+                        "_id": "65d80680b329663c00715622",
+                        "title": "BamYangGang",
+                        "artist": "bibi",
+                        "comment": "really good, guys. just listen",
+                        "proposer": "65d6f115b32758d2cd0559fd",
+                        "link": "https://www.youtube.com/watch?v=smdmEhkIRVc",
+                        "agree": 5,
+                        "reject": 6,
+                        "__v": 0,
+                      },
+                    ],
+                  "__v": 0,
+                }
+      "400":
+        $ref: "./openapi.yaml#/components/responses/BadRequest"
+      "500":
+        $ref: "./openapi.yaml#/components/responses/InternalServerError"
+
+/playlist/music:
+  put:
+    tags:
+      - Playlist
+    summary: 플리 노래 추가(삭제)
+    requestBody:
+      x-name: body
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              musicId:
+                type: string
+                description: 추가(삭제)하려는 노래의 오브젝트 아이디
+                example: 65d83a43db236ec878368692
+              playlistId:
+                type: string
+                description: 추가(삭제)하려는 노래가 존재하는 플레이리스트의 오브젝트 아이디
+                example: 65d6e1eccc7eab58fc815299
+              isAdd:
+                type: boolean
+                description: true면 추가, false면 삭제
+                example: true
+    responses:
+      "200":
+        description: 플레이리스트에 노래 추가(삭제) 성공
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                {
+                  "_id": "65d6e1eccc7eab58fc815299",
+                  "musics":
+                    ["65d80680b329663c00715622", "65d83a43db236ec878368692"],
+                  "__v": 0,
+                }
+      "400":
+        $ref: "./openapi.yaml#/components/responses/BadRequest"
+      "500":
+        $ref: "./openapi.yaml#/components/responses/InternalServerError"
