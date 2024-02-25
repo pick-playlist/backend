@@ -32,9 +32,9 @@ const userSchema = new mongoose.Schema({
 const visibleUser = userSchema.virtual("visibleUser");
 visibleUser.get(async function (value, virtual, doc) {
   const playlistPromises = [
-    Playlist.findById(doc.playlist).then((playlist) => playlist || []),
-    Playlist.findById(doc.acceptPlaylist).then((playlist) => playlist || []),
-    Playlist.findById(doc.rejectPlaylist).then((playlist) => playlist || []),
+    Playlist.getPlaylist(doc.playlist),
+    Playlist.getPlaylist(doc.acceptPlaylist),
+    Playlist.getPlaylist(doc.rejectPlaylist),
   ];
 
   const [playlist, acceptPlaylist, rejectPlaylist] = await Promise.all(
@@ -47,18 +47,9 @@ visibleUser.get(async function (value, virtual, doc) {
     nickname: doc.nickname,
     profilePhoto: doc.profilePhoto,
     isMember: doc.isMember,
-    playlist: {
-      _id: doc.playlist._id,
-      data: playlist ? playlist.musics : [],
-    },
-    acceptPlaylist: {
-      _id: doc.acceptPlaylist,
-      data: acceptPlaylist ? acceptPlaylist.musics : [],
-    },
-    rejectPlaylist: {
-      _id: doc.rejectPlaylist,
-      data: rejectPlaylist ? acceptPlaylist.musics : [],
-    },
+    playlist: playlist,
+    acceptPlaylist: acceptPlaylist,
+    rejectPlaylist: rejectPlaylist,
   };
 
   return data;
