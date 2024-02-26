@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Playlist = require("./Playlist");
+const User = require("./User");
 
 const roomSchema = new mongoose.Schema({
   code: { type: String, required: true },
@@ -24,6 +26,37 @@ const roomSchema = new mongoose.Schema({
     ref: "Playlist",
     required: true,
   },
+});
+
+const visibleRoom = roomSchema.virtual("visibleRoom");
+visibleRoom.get(async function (value, virtual, doc) {
+  const userPromises = doc.users.map(async (userId) => {
+    const user = await User.findById(userId);
+    return user.visibleUser;
+  });
+
+  const users = await Promise.all(userPromises);
+
+  const playlistPromises = [
+    Playlist.getPlaylist(doc.remainPlaylist),
+    Playlist.getPlaylist(doc.acceptPlaylist),
+    Playlist.getPlaylist(doc.rejectPlaylist),
+  ];
+
+  const [remainPlaylist, acceptPlaylist, rejectPlaylist] = await Promise.all(
+    playlistPromises
+  );
+
+  const data = {
+    _id: doc._id,
+    code: doc.code,
+    users: users,
+    remainPlaylist: remainPlaylist,
+    acceptPlaylist: acceptPlaylist,
+    rejectPlaylist: rejectPlaylist,
+  };
+
+  return data;
 });
 
 const Room = mongoose.model("Room", roomSchema);
