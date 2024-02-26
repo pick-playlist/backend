@@ -104,7 +104,7 @@ userSchema.statics.memberLogin = async function (email, password) {
 userSchema.statics.guestLogin = async function (nickname) {
   const isMember = false;
   const user = await this.create({ nickname, isMember });
-  return { _id: user._id, nickname: user.nickname };
+  return user.visibleUser;
 };
 
 const User = mongoose.model("User", userSchema);
