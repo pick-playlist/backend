@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const musicSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  artist: { type: String, required: true },
+  thumbnail: { type: String, required: true },
   comment: { type: String, required: true },
   proposer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   link: { type: String, required: true },

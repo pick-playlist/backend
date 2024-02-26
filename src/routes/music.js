@@ -8,11 +8,11 @@ const User = require("../models/User");
 
 router.post("/", async function (req, res, next) {
   try {
-    const { title, artist, comment, userId, link } = req.body;
+    const { title, thumbnail, comment, userId, link } = req.body;
 
     const newMusic = await Music.create({
       title: title,
-      artist: artist,
+      thumbnail: thumbnail,
       comment: comment,
       proposer: userId,
       link: link,
