@@ -70,7 +70,11 @@ router.get("/info/id/:roomId", async function (req, res, next) {
   try {
     const roomId = req.params.roomId;
     const room = await Room.findOne({ _id: roomId });
-    res.send(room);
+    if (!room) {
+      return res.status(404).json(createError(BAD_REQUEST, "Room not found."));
+    }
+    const visibleRoom = await room.visibleRoom;
+    return res.json(visibleRoom);
   } catch (err) {
     res.send(err);
   }
@@ -83,7 +87,8 @@ router.get("/info/code/:roomCode", async function (req, res, next) {
     if (!room) {
       return res.status(404).json(createError(BAD_REQUEST, "Room not found."));
     }
-    return res.send(room);
+    const visibleRoom = await room.visibleRoom;
+    return res.json(visibleRoom);
   } catch (err) {
     return next(err);
   }
