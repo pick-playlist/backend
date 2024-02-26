@@ -7,6 +7,7 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 const { connectDB } = require("./src/utils/db");
+const cors = require("cors");
 
 const indexRouter = require("./src/routes/index");
 const userRouter = require("./src/routes/user");
@@ -20,6 +21,7 @@ const app = express();
 app.set("views", path.join(__dirname, "src", "views"));
 app.set("view engine", "ejs");
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
