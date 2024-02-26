@@ -5,6 +5,7 @@ const Music = require("../models/Music");
 const Playlist = require("../models/Playlist");
 const Room = require("../models/Room");
 const User = require("../models/User");
+const { createError, BAD_REQUEST } = require("../utils/error");
 
 router.post("/create", async function (req, res, next) {
   try {
@@ -79,9 +80,12 @@ router.get("/info/code/:roomCode", async function (req, res, next) {
   try {
     const roomCode = req.params.roomCode;
     const room = await Room.findOne({ code: roomCode });
-    res.send(room);
+    if (!room) {
+      return res.status(404).json(createError(BAD_REQUEST, "Room not found."));
+    }
+    return res.send(room);
   } catch (err) {
-    res.send(err);
+    return next(err);
   }
 });
 
