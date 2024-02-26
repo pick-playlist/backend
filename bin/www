@@ -21,6 +21,17 @@ app.set("port", port);
 
 var server = http.createServer(app);
 
+// socket
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("Connection");
+});
+
 /**
  * Listen on provided port, on all network interfaces.
  */
