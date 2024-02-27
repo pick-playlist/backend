@@ -130,4 +130,20 @@ router.put("/info/tags/:roomId", async function (req, res, next) {
   }
 });
 
+router.delete("/delete/:roomId", async function (req, res, next) {
+  try {
+    const { roomId } = req.params;
+    console.log(roomId);
+    const data = await Room.findByIdAndDelete(roomId);
+
+    if (!data) {
+      return res.status(404).json(createError(BAD_REQUEST, "Room not found."));
+    }
+
+    res.send(data);
+  } catch (err) {
+    return next(err);
+  }
+});
+
 module.exports = router;
