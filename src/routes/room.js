@@ -43,7 +43,8 @@ router.post("/create", async function (req, res, next) {
       rejectPlaylist: rejectPlaylist,
     });
 
-    res.send(room);
+    const visibleRoom = await room.visibleRoom;
+    res.send(visibleRoom);
   } catch (err) {
     res.send(err);
   }
@@ -108,7 +109,9 @@ router.put("/user", async function (req, res, next) {
     const updatedRoom = await Room.findByIdAndUpdate(roomId, updateQuery, {
       new: true,
     });
-    res.send(updatedRoom);
+
+    const visibleRoom = await updatedRoom.visibleRoom;
+    res.send(visibleRoom);
   } catch (err) {
     res.send(err);
   }
