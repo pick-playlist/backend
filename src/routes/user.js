@@ -49,7 +49,7 @@ router.post("/signup", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    user = await User.memberLogin(email, password);
+    const user = await User.memberLogin(email, password);
     const token = createToken(user, TOKEN_MAX_AGE);
     user.token = token;
 
