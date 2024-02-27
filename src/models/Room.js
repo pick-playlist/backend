@@ -35,13 +35,18 @@ const roomSchema = new mongoose.Schema({
 
 const visibleRoom = roomSchema.virtual("visibleRoom");
 visibleRoom.get(async function (value, virtual, doc) {
+  // 방장
+  let hostUser = await User.findById(doc.hostUser);
+  hostUser = await hostUser.visibleUser;
+
+  // 유저 목록 (방장 포함)
   const userPromises = doc.users.map(async (userId) => {
     const user = await User.findById(userId);
     return user.visibleUser;
   });
-
   const users = await Promise.all(userPromises);
 
+  // 플레이리스트
   const playlistPromises = [
     Playlist.getPlaylist(doc.remainPlaylist),
     Playlist.getPlaylist(doc.acceptPlaylist),
@@ -55,7 +60,7 @@ visibleRoom.get(async function (value, virtual, doc) {
   const data = {
     _id: doc._id,
     code: doc.code,
-    hostUser: doc.hostUser,
+    hostUser: hostUser,
     users: users,
     remainPlaylist: remainPlaylist,
     acceptPlaylist: acceptPlaylist,
