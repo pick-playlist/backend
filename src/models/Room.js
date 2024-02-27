@@ -31,6 +31,11 @@ const roomSchema = new mongoose.Schema({
     ref: "Playlist",
     required: true,
   },
+  tags: {
+    type: [String],
+    required: true,
+    default: [],
+  },
 });
 
 const visibleRoom = roomSchema.virtual("visibleRoom");
@@ -65,6 +70,7 @@ visibleRoom.get(async function (value, virtual, doc) {
     remainPlaylist: remainPlaylist,
     acceptPlaylist: acceptPlaylist,
     rejectPlaylist: rejectPlaylist,
+    tags: doc.tags,
   };
 
   return data;

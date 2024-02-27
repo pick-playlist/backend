@@ -31,6 +31,7 @@ router.post("/create", async function (req, res, next) {
       remainPlaylist: remainPlaylist,
       acceptPlaylist: acceptPlaylist,
       rejectPlaylist: rejectPlaylist,
+      tags: [],
     });
 
     const visibleRoom = await room.visibleRoom;
@@ -107,19 +108,26 @@ router.put("/user", async function (req, res, next) {
   }
 });
 
-// router.delete("/user", async function (req, res, next) {
-//   try {
-//     const { roomId, userId } = req.body;
+router.put("/info/tags/:roomId", async function (req, res, next) {
+  console.log("hrere");
+  try {
+    const { roomId } = req.params; // 방 ID 가져오기
+    console.log(roomId);
+    const tags = req.body.tags;
 
-//     const room = await Room.findByIdAndUpdate(
-//       roomId,
-//       { $pull: { users: userId } },
-//       { new: true }
-//     );
-//     res.send(room);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// });
+    const room = await Room.findById(roomId);
+    if (!room) {
+      return res.status(404).json(createError(BAD_REQUEST, "Room not found."));
+    }
+
+    room.tags.push(...tags);
+
+    const updatedRoom = await room.save();
+    const visibleRoom = await updatedRoom.visibleRoom;
+    return res.json(visibleRoom);
+  } catch (err) {
+    res.send(err);
+  }
+});
 
 module.exports = router;
