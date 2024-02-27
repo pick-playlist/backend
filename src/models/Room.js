@@ -4,6 +4,11 @@ const User = require("./User");
 
 const roomSchema = new mongoose.Schema({
   code: { type: String, required: true },
+  hostUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   users: [
     { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   ],
@@ -50,6 +55,7 @@ visibleRoom.get(async function (value, virtual, doc) {
   const data = {
     _id: doc._id,
     code: doc.code,
+    hostUser: doc.hostUser,
     users: users,
     remainPlaylist: remainPlaylist,
     acceptPlaylist: acceptPlaylist,

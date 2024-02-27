@@ -12,16 +12,6 @@ router.post("/create", async function (req, res, next) {
     const { userId } = req.body;
     const code = getCode();
 
-    // const currentMusic = await Music.create({
-    //   title: "first",
-    //   artist: "first",
-    //   comment: "first",
-    //   proposer: userId,
-    //   link: "first",
-    //   agree: 0,
-    //   reject: 0,
-    // });
-
     const remainPlaylist = await Playlist.create({
       musics: [],
     });
@@ -37,7 +27,7 @@ router.post("/create", async function (req, res, next) {
     const room = await Room.create({
       code: code,
       users: [userId],
-      // currentMusicId: currentMusic._id,
+      hostUser: userId,
       remainPlaylist: remainPlaylist,
       acceptPlaylist: acceptPlaylist,
       rejectPlaylist: rejectPlaylist,
