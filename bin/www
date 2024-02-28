@@ -35,6 +35,11 @@ io.on("connection", (socket) => {
     console.log("update, ", data);
     io.emit("room_updated", data);
   });
+
+  socket.on("room_deleted", (data) => {
+    console.log("delete, ", data);
+    io.emit("room_deleted", data);
+  });
 });
 
 /**
