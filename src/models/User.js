@@ -3,14 +3,14 @@ const { connectDB } = require("../utils/db");
 const bcrypt = require("bcrypt");
 const Playlist = require("../models/Playlist");
 
-// const DEFAULT_USER_PHOTO =
-//   "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fcdn3d.iconscout.com%2F3d%2Fpremium%2Fthumb%2Fuser-4620688-3833029.png%3Ff%3Dwebp";
+const DEFAULT_USER_PHOTO =
+  "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fcdn3d.iconscout.com%2F3d%2Fpremium%2Fthumb%2Fuser-4620688-3833029.png%3Ff%3Dwebp";
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: false },
   nickname: { type: String, required: true },
   password: { type: String, required: false },
-  profilePhoto: { type: String, required: false, default: null },
+  profilePhoto: { type: String, required: false, default: DEFAULT_USER_PHOTO },
   isMember: { type: Boolean, required: true },
   playlist: {
     type: mongoose.Schema.Types.ObjectId,
